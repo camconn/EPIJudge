@@ -4,8 +4,21 @@ from test_framework import generic_test
 
 
 def plus_one(A: List[int]) -> List[int]:
-    # TODO - you fill in here.
-    return []
+    last = len(A) - 1
+    A[last] += 1
+
+    for i in range(len(A) - 1, -1, -1):
+        num = A[i]
+        if num >= 10:
+            A[i] = num % 10
+
+            if i >= 1:
+                # If there is a number before this one
+                A[i-1] += 1
+            else:
+                A.insert(0, 1)
+    return A
+        
 
 
 if __name__ == '__main__':
