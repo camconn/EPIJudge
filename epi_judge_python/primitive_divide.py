@@ -2,8 +2,19 @@ from test_framework import generic_test
 
 
 def divide(x: int, y: int) -> int:
-    # TODO - you fill in here.
-    return 0
+    res = 0
+    pwr = 32
+
+    y_pow = y << pwr
+    while x >= y:
+        while y_pow > x:
+            y_pow >>= 1
+            pwr -= 1
+
+        res += 1 << pwr
+        x -= y_pow
+    
+    return res
 
 
 if __name__ == '__main__':
