@@ -5,10 +5,21 @@ from test_framework.test_failure import PropertyName
 
 Rect = collections.namedtuple('Rect', ('x', 'y', 'width', 'height'))
 
+def intersects(a, b):
+    return (a.x <= b.x + b.width) and \
+        (a.x + a.width >= b.x) and \
+        (a.y <= b.y + b.height) and \
+        (a.y + a.height >= b.y)
 
 def intersect_rectangle(r1: Rect, r2: Rect) -> Rect:
-    # TODO - you fill in here.
-    return Rect(0, 0, 0, 0)
+    if intersects(r1, r2):
+        return Rect(
+            max(r1.x, r2.x), max(r1.y, r2.y),
+            min(r1.x + r1.width, r2.x + r2.width) - max(r1.x, r2.x),
+            min(r1.y + r1.height, r2.y + r2.height) - max(r1.y, r2.y)
+        )
+
+    return Rect(0, 0, -1, -1)
 
 
 def intersect_rectangle_wrapper(r1, r2):
