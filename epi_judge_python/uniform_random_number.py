@@ -1,4 +1,5 @@
 import functools
+import math
 import random
 
 from test_framework import generic_test
@@ -12,8 +13,21 @@ def zero_one_random():
 
 
 def uniform_random(lower_bound: int, upper_bound: int) -> int:
-    # TODO - you fill in here.
-    return 0
+    complete = False
+    rnge = upper_bound - lower_bound + 1
+        # avoid fencepost error
+        # e.g. [0, 10] would be *11* numbers
+    cycles = math.floor(math.log2(rnge)) + 1
+    gen = 0
+    while not complete:
+        gen = 0
+        for i in range(cycles):
+            gen = (gen << 1) | zero_one_random()
+
+        # we want to be done if the generated number is within our specified range
+        # hence the `not`
+        complete = not (gen >= rnge)
+    return gen + lower_bound
 
 
 @enable_executor_hook
