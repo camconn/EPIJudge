@@ -4,7 +4,10 @@ from test_framework import generic_test
 
 
 def rotate_matrix(square_matrix: List[List[int]]) -> None:
-    # TODO - you fill in here.
+    width = len(square_matrix[0])
+    height = len(square_matrix)
+
+
     return
 
 
