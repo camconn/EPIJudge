@@ -8,10 +8,36 @@ from test_framework.random_sequence_checker import (
 from test_framework.test_utils import enable_executor_hook
 
 
+import random
+
+
 # Assumption: there are at least k elements in the stream.
 def online_random_sample(stream: Iterator[int], k: int) -> List[int]:
-    # TODO - you fill in here.
-    return []
+    count = 0
+    sample = [0]*k
+
+    for tmp in range(k):
+        sample[tmp] = next(stream)
+        count += 1
+
+    try:
+        while True:
+            prob = random.randint(0, count)
+            count += 1
+            threshold = len(sample)
+
+            if prob <= k-1:
+                sample[prob] = next(stream)
+            else:
+                next(stream)
+
+    except StopIteration:
+        # done with stream
+        pass
+
+
+    return sample
+
 
 
 @enable_executor_hook

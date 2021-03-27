@@ -8,10 +8,46 @@ from test_framework.random_sequence_checker import (
     check_sequence_is_uniformly_random, run_func_with_retries)
 from test_framework.test_utils import enable_executor_hook
 
+import functools
+import itertools
+import random
+import math
+
+
+
+@functools.lru_cache(maxsize=2048)
+def fact(n):
+    return math.factorial(n)
+    
+
+# First attempt, brute-force approach.
+def _compute_random_permutation(n: int) -> List[int]:
+    if n == 1:
+        return [0]
+
+    possible = fact(n)
+
+    num = random.randint(1, possible)
+
+    nums = list(range(n))
+
+    perms = itertools.permutations(nums)
+    for i in range(possible):
+        if i+1 == num:
+            return list(next(perms))
+        next(perms)
+
+    return None
 
 def compute_random_permutation(n: int) -> List[int]:
-    # TODO - you fill in here.
-    return []
+    sample = list(range(n))
+
+    # Knuth Shuffle
+    for i in range(n):
+        target = random.randint(i, n-1)
+        sample[i], sample[target] = sample[target], sample[i]
+
+    return sample
 
 
 @enable_executor_hook

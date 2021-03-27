@@ -7,10 +7,25 @@ from test_framework.random_sequence_checker import (
     compute_combination_idx, run_func_with_retries)
 from test_framework.test_utils import enable_executor_hook
 
+import random
 
+
+# My solution, plus it's faster
 def random_sampling(k: int, A: List[int]) -> None:
-    # TODO - you fill in here.
+    while len(A) > k:
+        target = random.randint(0, len(A)-1)
+        end = len(A)-1
+
+        A[target], A[end] = A[end], A[target]
+        A.pop()
+        
     return
+
+# Cheesy solution using standard library
+def _random_sampling(k: int, A: List[int]) -> None:
+    out =  random.sample(A, k)
+    A.clear()
+    A.extend(out)
 
 
 @enable_executor_hook
